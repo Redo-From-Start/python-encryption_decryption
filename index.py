@@ -6,6 +6,7 @@ import os
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import os.path
 
 print("do you want to (E)ncrypt or (D)ecrypt")
 c = input()
@@ -22,16 +23,20 @@ if c == "E":
         backend=default_backend()
     )
     d = base64.urlsafe_b64encode(kdf.derive(password)) # Can only use kdf once
-    print('msg:')
-    message = input().encode()
+    print('file:')
+    fi = input()
+    f = open(fi,'rb')
+    message = f.read() # The key will be type bytes
+    f.close()
     key = Fernet(d)
     encrypted = key.encrypt(message)
-    f = open('out.enc', 'wb+')
+    f = open(fi+'.enc', 'wb+')
     f.write(encrypted)
     f.close()
 elif c == "D":
     print('file:')
-    f = open(input(),'rb')
+    fi = input()
+    f = open(fi,'rb')
     decrypt = f.read() # The key will be type bytes
     f.close()
     print('password:')
@@ -48,7 +53,8 @@ elif c == "D":
     d = base64.urlsafe_b64encode(kdf.derive(password)) # Can only use kdf once
     f = Fernet(d)
     decrypted = f.decrypt(decrypt)
-    f = open('out.unc','wb+')
+    e = fi[:-4]
+    f = open(e,'wb+')
     f.write(decrypted)
     f.close()
 else:
