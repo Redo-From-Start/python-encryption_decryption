@@ -8,8 +8,8 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os.path
 
-print("do you want to (E)ncrypt or (D)ecrypt")
-c = input()
+print("Do you want to (E)ncrypt or (D)ecrypt?")
+c = input().upper()
 if c == "E":
     print('password:')
     password_provided = input() # This is input in the form of a string
